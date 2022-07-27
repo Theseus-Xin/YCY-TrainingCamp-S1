@@ -103,7 +103,7 @@ class BrakeBanner {
         duration: .3,
         alpha: 1
       })
-      // pause()
+      pause()
     })
 
     actionButton.on("mouseup", () => {
@@ -119,7 +119,7 @@ class BrakeBanner {
         duration: .3,
         alpha: .5
       })
-      // start()
+      start()
     })
 
     // 创建粒子
@@ -160,16 +160,20 @@ class BrakeBanner {
 
       for (let i = 0; i < particles.length; i++) {
         const pItem = particles[i];
-
+        console.log(speed);
         pItem.gr.y += speed
-        pItem.gr.scale.y = 1
-        pItem.gr.scale.x = 1 /*  */
-        if (speed < 20) {
-          pItem.gr.scale.y += 5
-          pItem.gr.scale.x /= 2
-        } else {
+        // if (speed < 5) {
+
+        // } else if (5 < speed && speed < 10) {
+        //   pItem.gr.scale.y += 1
+        //   pItem.gr.scale.x /= 2
+        // } else
+        if (speed > 15) {
           pItem.gr.scale.y = 40
           pItem.gr.scale.x = 0.03
+        } else {
+          pItem.gr.scale.y = 1
+          pItem.gr.scale.x = 1 /*  */
         }
 
         // 超出边界，回到顶部
@@ -177,7 +181,41 @@ class BrakeBanner {
       }
     }
 
-    gsap.ticker.add(loop)
+    function start() {
+      speed = 0
+      for (let i = 0; i < particles.length; i++) {
+        const pItem = particles[i];
+        pItem.gr.scale.y = 1
+        pItem.gr.scale.x = 1
+
+        gsap.to(pItem.gr, {
+          duration: .2,
+          x: pItem.sx,
+          y: pItem.sy - 40,
+          ease: "back.out"
+        })
+      }
+      gsap.ticker.add(loop)
+    }
+
+    function pause() {
+      console.log('stop');
+      gsap.ticker.remove(loop)
+      for (let i = 0; i < particles.length; i++) {
+        const pItem = particles[i];
+        pItem.gr.scale.y = 1
+        pItem.gr.scale.x = 1
+
+        gsap.to(pItem.gr, {
+          duration: .4,
+          x: pItem.sx,
+          y: pItem.sy,
+          ease: "elastic.out"
+        })
+      }
+    }
+    start()
+
     bikeContainer.addChild(bikeLever)
 
 
