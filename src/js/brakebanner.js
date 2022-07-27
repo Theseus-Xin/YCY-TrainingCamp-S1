@@ -24,7 +24,7 @@ class BrakeBanner {
     })
   }
 
-  show () {
+  show() {
 
     // 按钮
     let actionButton = new PIXI.Container()
@@ -54,8 +54,17 @@ class BrakeBanner {
 
     btnCircle.scale.x = btnCircle.scale.y = 0.8
 
-    gsap.to(btnCircle.scale, { duration: 1, x: 1.3, y: 1.3, repeat: -1 })
-    gsap.to(btnCircle, { duration: 1, alpha: 0, repeat: -1 })
+    gsap.to(btnCircle.scale, {
+      duration: 1,
+      x: 1.3,
+      y: 1.3,
+      repeat: -1
+    })
+    gsap.to(btnCircle, {
+      duration: 1,
+      alpha: 0,
+      repeat: -1
+    })
 
 
     const bikeContainer = new PIXI.Container()
@@ -71,7 +80,7 @@ class BrakeBanner {
     const bikeLever = new PIXI.Sprite(this.loader.resources['brake_lever'].texture)
 
     bikeContainer.addChild(bikeImage)
-    bikeContainer.addChild(bikeLever)
+
     bikeContainer.addChild(bikeHandlerbar)
 
     bikeLever.pivot.x = 455
@@ -82,16 +91,34 @@ class BrakeBanner {
 
     bikeImage.alpha = .5
     actionButton.on("mousedown", () => {
-      gsap.to(bikeLever, { duration: .3, rotation: Math.PI / 180 * -30 })
-      gsap.to(bikeContainer, { duration: .3, y: bikeContainer.y + 30 })
-      gsap.to(bikeImage, { duration: .3, alpha: 1 })
+      gsap.to(bikeLever, {
+        duration: .3,
+        rotation: Math.PI / 180 * -30
+      })
+      gsap.to(bikeContainer, {
+        duration: .3,
+        y: bikeContainer.y + 30
+      })
+      gsap.to(bikeImage, {
+        duration: .3,
+        alpha: 1
+      })
       // pause()
     })
 
     actionButton.on("mouseup", () => {
-      gsap.to(bikeLever, { duration: .3, rotation: 0 })
-      gsap.to(bikeContainer, { duration: .3, y: bikeContainer.y - 30 })
-      gsap.to(bikeImage, { duration: .3, alpha: .5 })
+      gsap.to(bikeLever, {
+        duration: .3,
+        rotation: 0
+      })
+      gsap.to(bikeContainer, {
+        duration: .3,
+        y: bikeContainer.y - 30
+      })
+      gsap.to(bikeImage, {
+        duration: .3,
+        alpha: .5
+      })
       // start()
     })
 
@@ -99,11 +126,11 @@ class BrakeBanner {
     const particleContainer = new PIXI.Container()
     // 某一个角度，持续移动
     particleContainer.rotation = 35 * Math.PI / 180
-    particleContainer.pivot.x = this.width / 2
-    particleContainer.pivot.y = this.height / 2
+    particleContainer.pivot.x = window.innerWidth / 2
+    particleContainer.pivot.y = window.innerHeight / 2
 
-    particleContainer.x = this.width / 2
-    particleContainer.y = this.height / 2
+    particleContainer.x = window.innerWidth / 2
+    particleContainer.y = window.innerHeight / 2
     this.app.stage.addChild(particleContainer)
     const particles = []
     // 多个颜色
@@ -126,7 +153,7 @@ class BrakeBanner {
       particles.push(pItem)
     }
     let speed = 0 // 初始速度
-    function loop () {
+    function loop() {
       // console.log(particles);
       speed += .5
       speed = Math.min(speed, 20)
@@ -135,9 +162,12 @@ class BrakeBanner {
         const pItem = particles[i];
 
         pItem.gr.y += speed
-        // pItem.gr.scale.y = 1
-        // pItem.gr.scale.x = 1
-        if (speed > 20) {
+        pItem.gr.scale.y = 1
+        pItem.gr.scale.x = 1 /*  */
+        if (speed < 20) {
+          pItem.gr.scale.y += 5
+          pItem.gr.scale.x /= 2
+        } else {
           pItem.gr.scale.y = 40
           pItem.gr.scale.x = 0.03
         }
@@ -148,7 +178,7 @@ class BrakeBanner {
     }
 
     gsap.ticker.add(loop)
-
+    bikeContainer.addChild(bikeLever)
 
 
     const resize = () => {
@@ -161,5 +191,3 @@ class BrakeBanner {
   }
 
 }
-
-
